@@ -145,8 +145,8 @@ transforms a model's normal buffer into its corect world position.
 
 ## shaderimp/
 
-safer to just ignore this file has anything in it until the shading
-sublanguage is properly described. hell, this whole folder really.
+safer to just ignore this folder has anything in it until the shading
+sublanguage is properly described.
 
 # Contact
 
