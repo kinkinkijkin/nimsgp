@@ -64,7 +64,7 @@ proc triBBOXscreen* (itri: Triangle, buffersize: BufRESprefloat): BBoxSCREE =
     maximalExtent = maximalExtent.clamp(vec2(0'f32), buffersize)
 
     result.pos = vec2[uint16](minimalExtent.x.uint16, minimalExtent.y.uint16)
-    var boxend = vec2[uint16](maximalExtent.x.uint16, maximalExtent.y.uint16)
+    var boxend = vec2[uint16](maximalExtent.x.ceil().uint16, maximalExtent.y.ceil().uint16)
     result.siz = boxend - result.pos
 
     return result
