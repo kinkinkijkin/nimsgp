@@ -10,6 +10,7 @@ Haiku and most riscv computers.
 
 ## confirmed working on:
  - Debian 10 x86_64 (nim 1.4.2)
+ - Haiku x86_64 (nim 1.6.0)
 
 ## implementation plans (so far)
 shading sublanguage:
