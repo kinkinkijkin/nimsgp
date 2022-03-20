@@ -8,7 +8,8 @@ type
     BBoxSPACE2D* = object
         pos*, siz*: Vec[2, float32]
     PShadCallback2D*[T] = proc (bpos: Vec2[uint16], here: Vec2[float32],
-                            norm: Vec2[float32], vcol: Vec3[uint8]): Vec4[uint16] {.inline.}
+                            norm: Vec2[float32],
+                            vcol: Vec3[uint8], uv: Vec2[float32]): Vec4[uint16] {.inline.}
     
 proc t2d: Triangle2D {.inline.} =
     result.a = vec2(0.float32)
@@ -16,9 +17,9 @@ proc t2d: Triangle2D {.inline.} =
     result.c = vec2(0.float32)
     return
 
-const tri2Def*: Triangle2D = td()
+const tri2Def*: Triangle2D = t2d()
 
-const tri2NorDef*: array[2, Vec3[float32]] = [vec2(0.float32),
+const tri2NorDef*: array[3, Vec2[float32]] = [vec2(0.float32),
                                             vec2(0.float32),
                                             vec2(0.float32)]
 
@@ -53,7 +54,7 @@ proc collectElems*[T,S] (element: TrianglePointer,
                         data: array[S, Vec2[T]]): array[3, Vec2[T]] {.inline.} =
     return [data[element.x], data[element.y], data[element.z]]
 
-proc tri2ToScreen* (itri: Triangle2D, screenSize: BufRESprefloat): Triangle =
+proc tri2ToScreen* (itri: Triangle2D, screenSize: BufRESprefloat): Triangle2D =
     var scr2 = screenSize / 2
     result.a = (itri.a + 1.0) * scr2
     result.b = (itri.b + 1.0) * scr2
@@ -129,4 +130,4 @@ proc drawReadyElements2D* (intris: MultiElementBuffer, tribuf: V2Buffer,
                     #for inter in attseq:
                     #    attch.add(triEstimate(inter, tripos))
 
-                    outbound[p.x][p.y] = shad(p, bpos, norhere, colhere, uv)
+                    outbound[p.x][p.y] = shad(p, bposf, norhere, colhere, uv)
