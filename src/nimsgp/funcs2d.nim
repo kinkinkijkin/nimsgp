@@ -129,5 +129,8 @@ proc drawReadyElements2D* (intris: MultiElementBuffer, tribuf: V2Buffer,
 
                     #for inter in attseq:
                     #    attch.add(triEstimate(inter, tripos))
+                    
+                    var ocol = shad(p, bposf, norhere, colhere, uv)
+                    if ocol.w <= 256.uint16: break cycle2
 
-                    outbound[p.x][p.y] = shad(p, bposf, norhere, colhere, uv)
+                    outbound[p.x][p.y] = ocol
