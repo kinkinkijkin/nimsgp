@@ -8,3 +8,4 @@ license     = "MIT"
 skipFiles   = @["test.nim"]
 
 requires "glm >= 1.1.1"
+requires "sdl2"

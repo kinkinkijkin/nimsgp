@@ -44,7 +44,8 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
                 dbuf: var ScalarBuffer2D, shad: PShadingCallback,
                 outbound: var ColourInnerBufferINTE, outsize: BufRESprefloat,
                 normelem: MultiElementBuffer, normatt: V3Buffer,
-                colelem: MultiElementBuffer, colatt: ColourBufferOBUF) =
+                colelem: MultiElementBuffer, colatt: ColourBufferOBUF,
+                uvelem: MultiElementBuffer, uvatt: V2Buffer) =
 
     for i in 0..(intris.len-1):
         var ctri = intris[i].collectTri(tribuf)
@@ -72,6 +73,12 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
             block elemer3:
                 if colelem.len < intris.len: break elemer3
                 col = colelem[i].collectElems(colatt)
+
+            var uv: array[2, float32] = triUVDef
+
+            block elemer4:
+                if uvelem.len < intris.len: break elemer4
+                uv = uvelem[i].collectElems(uvatt)
 
             for p in bbs:
 

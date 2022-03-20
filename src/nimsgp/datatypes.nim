@@ -17,6 +17,7 @@ type
     BufRES* = Vec[2, uint16]
     BufRESprefloat* = Vec[2, float32]
     V3Buffer*[size: static int] = array[size, Vec[3,float32]]
+    V2Buffer* [size: static int] = array[size, Vec2[float32]]
     Attribute2Buffer*[size: static int, T] = array[size, Vec[2, T]]
     ColourBufferINTE*[size: static int] = array[size, ColourINTE]
     ColourInnerBufferINTE*[sizex, sizey: static int] = array[sizex, array[sizey, ColourINTE]]
@@ -43,6 +44,10 @@ const triColDef*: array[3, ColourOBUF] = [vec3(0.uint8),
 const triNorDef*: array[3, Vec3[float32]] = [vec3(0.float32),
                                             vec3(0.float32),
                                             vec3(0.float32)]
+
+const triUVDef*: array[3, Vec2[float32]] = [vec2(0.float32),
+                                            vec2(0.float32),
+                                            vec2(0.float32)]
 
 #works on a single triangle to create a spatial bounding box. no assumptions.
 
