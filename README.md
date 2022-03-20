@@ -144,6 +144,23 @@ into perspective space. requires usage and understanding of GLM.
 `defTransNormal` humorous disobedience of naming conventions,
 transforms a model's normal buffer into its corect world position.
 
+## shadingdata.nim
+
+uhhhh this was supposed to be a data structures file but instead
+contains texturing functions
+
+oops i guess
+
+## funcs2d.nim
+
+implements important functions from the 3d api in more efficient forms
+for 2d rendering. only one actually new function.
+
+`line2D` creates a line in the same space as the input data.
+... by faking it by making a triangle cause I don't want to implement
+a proper linealg right now. watch for return types or alternate procs
+in later versions of the API if you use this.
+
 ## shaderimp/
 
 safer to just ignore this folder has anything in it until the shading
