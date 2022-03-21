@@ -62,19 +62,22 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
             #    for att in attachments:
             #        attseq.add(att.elements[i].collectElems(att.arrptr[]))
 
-            var nor: array[3, Vec3[float32]] = triNorDef
+            var nor: seq[Vec3[float32]] = triNorDef
 
             block elemer2:
-                if normelem.len < intris.len: break elemer2
+                if normelem.len-1 < i: break elemer2
                 nor = normelem[i].collectElems(normatt)
 
-            var col: array[3, ColourOBUF] = triColDef
+            var col: seq[ColourOBUF] = triColDef
 
             block elemer3:
+                if colelem.len < 1:
+                    col = @[colatt[0], colatt[0], colatt[0]]
+                    break elemer3
                 if colelem.len < intris.len: break elemer3
                 col = colelem[i].collectElems(colatt)
 
-            var uv: array[2, float32] = triUVDef
+            var uv: seq[Vec2[float32]] = triUVDef
 
             block elemer4:
                 if uvelem.len < intris.len: break elemer4
@@ -93,6 +96,7 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
 
                     var norhere = triEstimate(nor, tripos)
                     var colhere = triEstimateCol(col, tripos)
+                    var uvhere = triEstimate(uv, tripos)
 
                     #for inter in attseq:
                     #    attch.add(triEstimate(inter, tripos))
@@ -100,4 +104,4 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
                     dbuf[p.x][p.y] = dpth
 
                     outbound[p.x][p.y] = shad(p, vec3(bposf.x, bposf.y, dpth),
-                                            norhere, colhere)
+                                            norhere, colhere, uvhere)

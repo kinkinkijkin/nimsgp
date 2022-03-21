@@ -4,6 +4,9 @@ import datatypes, glm
 proc lerp*(a: float32, b: float32, c: float32): float32 {.inline.} =
     return (a * (1.0 - c)) + (b * c)
 
+proc lerp*[T](a: Vec2[T], b: Vec2[T], c: float32): Vec2[T] {.inline.} =
+    return (a * (1.0 - c)) + (b * c)
+
 proc lerp*[T](a: Vec3[T], b: Vec3[T], c: float32): Vec3[T] {.inline.} =
     return (a * (1.0 - c)) + (b * c)
 
@@ -29,7 +32,7 @@ proc tripleEdgeFunc* (itri: Triangle, pos: BufRESprefloat): bool =
     proc ef (a,b,c: Vec2f):float32 {.inline.} =
         return (c.x-a.x)*(b.y-a.y)-(c.y-a.y)*(b.x-a.x)
 
-    return ((ef(itri.a.xy, itri.b.xy, pos) >= 0) and
+    return not ((ef(itri.a.xy, itri.b.xy, pos) >= 0) and
             (ef(itri.b.xy, itri.c.xy, pos) >= 0) and
             (ef(itri.a.xy, itri.c.xy, pos) >= 0))
 
@@ -38,10 +41,10 @@ proc tripleEdgeFunc* (itri: Triangle, pos: BufRESprefloat): bool =
 proc depthEstimate* (itri: Triangle, trep: Vec2[float32]): float32 {.inline.} =
     return lerp(lerp(itri.a.z, itri.b.z, trep.x), itri.c.z, trep.y)
 
-proc triEstimate*[T] (invec: array[3, T], trep: Vec2[float32]): T {.inline.} =
+proc triEstimate*[T] (invec: seq[T], trep: Vec2[float32]): T {.inline.} =
     return lerp(lerp(invec[0], invec[1], trep.x), invec[2], trep.y)
 
-proc triEstimateCol*[T] (invec: array[3, T], trep: Vec2[float32]): T {.inline.} =
+proc triEstimateCol*[T] (invec: seq[T], trep: Vec2[float32]): T {.inline.} =
     return lerpCol(lerpCol(invec[0], invec[1], trep.x), invec[2], trep.y)
 
 #depth test function.

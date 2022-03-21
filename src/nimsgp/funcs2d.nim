@@ -107,6 +107,9 @@ proc drawReadyElements2D* (intris: MultiElementBuffer, tribuf: V2Buffer,
             var col: array[3, ColourOBUF] = triColDef
 
             block elemer3:
+                if colelem.len < 1:
+                    col = colatt[0]
+                    break elemer3
                 if colelem.len < intris.len: break elemer3
                 col = colelem[i].collectElems(colatt)
 
@@ -129,7 +132,7 @@ proc drawReadyElements2D* (intris: MultiElementBuffer, tribuf: V2Buffer,
 
                     #for inter in attseq:
                     #    attch.add(triEstimate(inter, tripos))
-                    
+
                     var ocol = shad(p, bposf, norhere, colhere, uv)
                     if ocol.w <= 256.uint16: break cycle2
 

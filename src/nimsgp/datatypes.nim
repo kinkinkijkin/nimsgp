@@ -16,18 +16,19 @@ type
     ColourINTE* = Vec[4,uint16]
     BufRES* = Vec[2, uint16]
     BufRESprefloat* = Vec[2, float32]
-    V3Buffer*[size: static int] = array[size, Vec[3,float32]]
-    V2Buffer* [size: static int] = array[size, Vec2[float32]]
+    V3Buffer* = seq[Vec[3,float32]]
+    V2Buffer* = seq[Vec2[float32]]
     Attribute2Buffer*[size: static int, T] = array[size, Vec[2, T]]
     ColourBufferINTE*[size: static int] = array[size, ColourINTE]
     ColourInnerBufferINTE*[sizex, sizey: static int] = array[sizex, array[sizey, ColourINTE]]
-    ColourBufferOBUF*[size: static int] = array[size, ColourOBUF]
+    ColourBufferOBUF* = seq[ColourOBUF]
     ColourOutBufferOBUF*[sizex, sizey: static int] = array[sizex, array[sizey, ColourOBUF]]
     ScalarBuffer1D*[size: static int] = array[size, float32]
-    MultiElementBuffer*[size: static int] = array[size, TrianglePointer]
+    MultiElementBuffer* = seq[TrianglePointer]
     ScalarBuffer2D*[sizex, sizey: static int] = array[sizex, array[sizey, float32]]
     PShadingCallback*[T] = proc (bpos: Vec2[uint16], here: Vec3[float32],
-                            norm: Vec3[float32], vcol: Vec3[uint8]): Vec4[uint16] {.inline.}
+                            norm: Vec3[float32], vcol: Vec3[uint8],
+                            uv: Vec2[float32]): Vec4[uint16] {.inline.}
 
 proc td: Triangle {.inline.} =
     result.a = vec3(0.float32)
@@ -37,17 +38,17 @@ proc td: Triangle {.inline.} =
 
 const triDef*: Triangle = td()
 
-const triColDef*: array[3, ColourOBUF] = [vec3(0.uint8),
+const triColDef*: seq[ColourOBUF] = @[vec3(0.uint8),
                                         vec3(0.uint8),
                                         vec3(0.uint8)]
 
-const triNorDef*: array[3, Vec3[float32]] = [vec3(0.float32),
-                                            vec3(0.float32),
-                                            vec3(0.float32)]
+const triNorDef*: seq[Vec3[float32]] = @[vec3(0.float32),
+                                        vec3(0.float32),
+                                        vec3(0.float32)]
 
-const triUVDef*: array[3, Vec2[float32]] = [vec2(0.float32),
-                                            vec2(0.float32),
-                                            vec2(0.float32)]
+const triUVDef*: seq[Vec2[float32]] = @[vec2(0.float32),
+                                        vec2(0.float32),
+                                        vec2(0.float32)]
 
 #works on a single triangle to create a spatial bounding box. no assumptions.
 
@@ -69,8 +70,8 @@ proc triBBOXscreen* (itri: Triangle, buffersize: BufRESprefloat): BBoxSCREE =
     maximalExtent = maximalExtent.clamp(vec2(0'f32), buffersize)
 
     result.pos = vec2[uint16](minimalExtent.x.uint16, minimalExtent.y.uint16)
-    var boxend = vec2[uint16](maximalExtent.x.ceil().uint16, maximalExtent.y.ceil().uint16)
-    result.siz = boxend - result.pos
+    var boxend = vec2[uint16](maximalExtent.x.uint16, maximalExtent.y.uint16)
+    result.siz = (boxend - result.pos)
 
     return result
 
@@ -85,12 +86,12 @@ proc collectTri* (element: TrianglePointer, data: V3Buffer): Triangle {.inline.}
 
 #collects attachments for a triangle from elements.
 
-proc collectElems*[T,S] (element: TrianglePointer, data: array[S, T]): array[3, T] {.inline.} =
-    return vec3(data[element.x], data[element.y], data[element.z])
+proc collectElems*[T] (element: TrianglePointer, data: seq[T]): seq[T] {.inline.} =
+    return @[data[element.x], data[element.y], data[element.z]]
 
-proc collectElems*[T,S] (element: TrianglePointer,
-                        data: array[S, Vec3[T]]): array[3, Vec3[T]] {.inline.} =
-    return [data[element.x], data[element.y], data[element.z]]
+proc collectElems*[T] (element: TrianglePointer,
+                        data: seq[Vec3[T]]): seq[Vec3[T]] {.inline.} =
+    return @[data[element.x], data[element.y], data[element.z]]
 
 #clears a depth buffer in a "standard" way. sometimes not desirable,
 #even for a depth buffer.
