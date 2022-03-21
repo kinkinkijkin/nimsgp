@@ -32,9 +32,13 @@ proc tripleEdgeFunc* (itri: Triangle, pos: BufRESprefloat): bool =
     proc ef (a,b,c: Vec2f):float32 {.inline.} =
         return (c.x-a.x)*(b.y-a.y)-(c.y-a.y)*(b.x-a.x)
 
-    return not ((ef(itri.a.xy, itri.b.xy, pos) >= 0) and
-            (ef(itri.b.xy, itri.c.xy, pos) >= 0) and
-            (ef(itri.a.xy, itri.c.xy, pos) >= 0))
+    if ef(itri.a.xy, itri.b.xy, itri.c.xy) >= 0:
+        return ((ef(itri.a.xy, itri.b.xy, pos) > -1) and
+                    (ef(itri.b.xy, itri.c.xy, pos) > -1) and
+                    (ef(itri.c.xy, itri.a.xy, pos) > -1))
+    return ((ef(itri.a.xy, itri.b.xy, pos) < 1) and
+            (ef(itri.b.xy, itri.c.xy, pos) < 1) and
+            (ef(itri.c.xy, itri.a.xy, pos) < 1))
 
 #makes depth at pixel from a triangle
 
