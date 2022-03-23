@@ -33,23 +33,23 @@ proc tripleEdgeFunc* (itri: Triangle, pos: BufRESprefloat): bool =
         return (c.x-a.x)*(b.y-a.y)-(c.y-a.y)*(b.x-a.x)
 
     if ef(itri.a.xy, itri.b.xy, itri.c.xy) >= 0:
-        return ((ef(itri.a.xy, itri.b.xy, pos) > -1) and
-                    (ef(itri.b.xy, itri.c.xy, pos) > -1) and
-                    (ef(itri.c.xy, itri.a.xy, pos) > -1))
-    return ((ef(itri.a.xy, itri.b.xy, pos) < 1) and
-            (ef(itri.b.xy, itri.c.xy, pos) < 1) and
-            (ef(itri.c.xy, itri.a.xy, pos) < 1))
+        return ((ef(itri.a.xy, itri.b.xy, pos) > -10) and
+                    (ef(itri.b.xy, itri.c.xy, pos) > -10) and
+                    (ef(itri.c.xy, itri.a.xy, pos) > -10))
+    return ((ef(itri.a.xy, itri.b.xy, pos) < 10) and
+            (ef(itri.b.xy, itri.c.xy, pos) < 10) and
+            (ef(itri.c.xy, itri.a.xy, pos) < 10))
 
 #makes depth at pixel from a triangle
 
 proc depthEstimate* (itri: Triangle, trep: Vec2[float32]): float32 {.inline.} =
-    return lerp(lerp(itri.a.z, itri.b.z, trep.x), itri.c.z, trep.y)
+    return -lerp(lerp(itri.a.z, itri.b.z, trep.y), itri.c.z, trep.x)
 
 proc triEstimate*[T] (invec: seq[T], trep: Vec2[float32]): T {.inline.} =
-    return lerp(lerp(invec[0], invec[1], trep.x), invec[2], trep.y)
+    return lerp(lerp(invec[0], invec[1], trep.y), invec[2], trep.x)
 
 proc triEstimateCol*[T] (invec: seq[T], trep: Vec2[float32]): T {.inline.} =
-    return lerpCol(lerpCol(invec[0], invec[1], trep.x), invec[2], trep.y)
+    return lerpCol(lerpCol(invec[0], invec[1], trep.y), invec[2], trep.x)
 
 #depth test function.
 

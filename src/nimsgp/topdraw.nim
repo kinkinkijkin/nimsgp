@@ -86,7 +86,8 @@ proc drawReadyElements* (intris: MultiElementBuffer, tribuf: V3Buffer,
             for p in bbs:
 
                 block cycle2:
-                    var bposf: BufRESprefloat = vec2(p.x.float32, p.y.float32)
+                    var bposf: BufRESprefloat = (vec2(p.x.float32, p.y.float32) +
+                                                vec2(0.5.float32))
                     if not(tripleEdgeFunc(ctri, bposf)): break cycle2
 
                     var tripos = terp(ctri, bposf)
