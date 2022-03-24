@@ -1,3 +1,8 @@
+# NOTICE THU - 24 - MAR - 2022
+
+due to escalation of dire situation with sole developer of this library
+development is on hold with no projectable end date effective immediately
+
 # nimsgp (Nim Software Graphics Programming Library)
 
 nimsgp / libnimsgp is a software-based 3D rendering library,
